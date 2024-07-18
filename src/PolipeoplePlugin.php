@@ -1,9 +1,11 @@
 <?php
 
-namespace detit\Polipeople;
+namespace Detit\Polipeople;
 
-use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Filament\Contracts\Plugin;
+use Detit\Polipeople\Resources\TeamResource;
+use Detit\Polipeople\Resources\MemberResource;
 
 class PolipeoplePlugin implements Plugin
 {
@@ -14,7 +16,11 @@ class PolipeoplePlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        //
+        $panel
+            ->resources([
+                TeamResource::class,
+                MemberResource::class,
+            ]);
     }
 
     public function boot(Panel $panel): void

@@ -1,20 +1,17 @@
 <?php
 
-namespace detit\Polipeople;
+namespace Detit\Polipeople;
 
-use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
-use Livewire\Features\SupportTesting\Testable;
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use detit\Polipeople\Commands\PolipeopleCommand;
-use detit\Polipeople\Testing\TestsPolipeople;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 
 class PolipeopleServiceProvider extends PackageServiceProvider
 {
@@ -36,7 +33,7 @@ class PolipeopleServiceProvider extends PackageServiceProvider
                     ->publishConfigFile()
                     ->publishMigrations()
                     ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub('fmpoli/polipeople');
+                    ->askToStarRepoOnGitHub('detit/polipeople');
             });
 
         $configFileName = $package->shortName();
@@ -86,12 +83,12 @@ class PolipeopleServiceProvider extends PackageServiceProvider
         }
 
         // Testing
-        Testable::mixin(new TestsPolipeople());
+        // Testable::mixin(new TestsPolipeople());
     }
 
     protected function getAssetPackageName(): ?string
     {
-        return 'fmpoli/polipeople';
+        return 'detit/polipeople';
     }
 
     /**
