@@ -10,13 +10,13 @@ use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Detit\Polipeople\Models\Team;
 use Detit\Polipeople\Resources\TeamResource\Pages;
-// use Filament\Resources\Concerns\Translatable;
+use Filament\Resources\Concerns\Translatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TeamResource extends Resource
 {
-    // use Translatable;
+    use Translatable;
     protected static ?string $model = Team::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -104,7 +104,7 @@ class TeamResource extends Resource
     {
         return [
             'index' => Pages\ListTeams::route('/'),
-            // 'create' => Pages\CreateTeam::route('/create'),
+            'create' => Pages\CreateTeam::route('/create'),
             'edit' => Pages\EditTeam::route('/{record}/edit'),
         ];
     }

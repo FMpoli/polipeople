@@ -8,7 +8,7 @@ use Detit\Polipeople\Resources\MemberResource;
 
 class ListMembers extends ListRecords
 {
-    // use ListRecords\Concerns\Translatable;
+    use ListRecords\Concerns\Translatable;
     protected static string $resource = MemberResource::class;
 
     protected function getHeaderActions(): array

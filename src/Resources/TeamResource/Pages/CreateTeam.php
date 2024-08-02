@@ -8,7 +8,7 @@ use Detit\Polipeople\Resources\TeamResource;
 
 class CreateTeam extends CreateRecord
 {
-    // use CreateRecord\Concerns\Translatable;
+    use CreateRecord\Concerns\Translatable;
     protected static string $resource = TeamResource::class;
 
     protected function getHeaderActions(): array

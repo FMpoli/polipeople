@@ -9,7 +9,7 @@ use Detit\Polipeople\Resources\TeamResource;
 
 class ListTeams extends ListRecords
 {
-    // use ListRecords\Concerns\Translatable;
+    use ListRecords\Concerns\Translatable;
     protected static string $resource = TeamResource::class;
 
     protected function getHeaderActions(): array

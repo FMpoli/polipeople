@@ -8,7 +8,7 @@ use Detit\Polipeople\Resources\MemberResource;
 
 class EditMember extends EditRecord
 {
-    // use EditRecord\Concerns\Translatable;
+    use EditRecord\Concerns\Translatable;
     protected static string $resource = MemberResource::class;
 
     protected function getHeaderActions(): array

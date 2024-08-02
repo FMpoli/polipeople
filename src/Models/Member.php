@@ -4,6 +4,7 @@ namespace Detit\Polipeople\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\Builder;
 use Detit\Polipeople\Models\PolipeopleTeam;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Member extends Model
 {
     protected $table = 'polipeople_members';
-    // use HasTranslations;
+    use HasTranslations;
 
     /**
      * @var array
@@ -60,6 +61,17 @@ class Member extends Model
     public function getFullNameAttribute(): string
     {
         return "{$this->name} {$this->last_name}";
+    }
+
+    /**
+     * Scope a query to only include published and active news.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublished(Builder $query)
+    {
+        return $query->where('is_published', true);
     }
 
 }
