@@ -146,6 +146,7 @@ class PolipeopleServiceProvider extends PackageServiceProvider
             'create_polipeople_teams_table',
             'create_polipeople_members_table',
             'create_polipeople_teams_members_table',
+            'update_polipeople_members_table',
         ];
     }
 }

@@ -14,9 +14,10 @@ class TeamController extends Controller
 
         if ($slug) {
             $team = Team::where('slug->' . App()->getLocale(), $slug)->firstOrFail();
-            $members = $team->members()->paginate(9);
+
+            $members = $team->members()->with('teams')->paginate(9);
         } else {
-            $members = Member::published()->paginate(9);
+            $members = Member::published()->with('teams')->paginate(9);
         }
 
         return view('polipeople::team.index', compact('members', 'teams', 'slug'));

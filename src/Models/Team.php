@@ -39,6 +39,6 @@ class Team extends Model
 
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(Member::class, 'polipeople_teams_members', 'member_id', 'team_id');
+        return $this->belongsToMany(Member::class, 'polipeople_teams_members', 'team_id', 'member_id');
     }
 }

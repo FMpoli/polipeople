@@ -38,6 +38,11 @@ class MemberResource extends Resource
                     ->schema([
                         Forms\Components\Section::make(__('members.member'))
                         ->schema([
+                            TextInput::make('prefix')
+                                ->label(__('members.prefix'))
+                                ->required()
+                                ->autocapitalize('words')
+                                ->maxLength(255),
                             TextInput::make('name')
                                 ->label(__('members.name'))
                                 ->required()
@@ -50,7 +55,6 @@ class MemberResource extends Resource
                                     $set('slug', $slug);
                                 })
                                 ->maxLength(255),
-
                             TextInput::make('last_name')
                                 ->label(__('members.last_name'))
                                 ->required()
@@ -67,6 +71,9 @@ class MemberResource extends Resource
                                 ->label(__('members.slug'))
                                 ->required()
                                 ->maxLength(255),
+                            Forms\Components\TextInput::make('affiliation')
+                                ->label(__('members.affiliation'))
+                                ->columnSpanFull(),
                             Forms\Components\Textarea::make('bio')
                                 ->label(__('members.bio'))
                                 ->columnSpanFull(),
@@ -74,7 +81,7 @@ class MemberResource extends Resource
                             Forms\Components\Toggle::make('is_published')
                                 ->label(__('members.is_published'))
                                 ->required(),
-                        ])->columns(3),
+                        ])->columns(4),
 
                     ])->columnSpan(2),
                 Forms\Components\Section::make()

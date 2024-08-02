@@ -34,7 +34,10 @@ class Member extends Model
         'links',
         'handle',
         'avatar',
-        'is_published'
+        'is_published',
+        'prefix',
+        'affiliation',
+        'role'
     ];
 
     protected $casts = [
@@ -47,14 +50,17 @@ class Member extends Model
     protected $translatable = [
         'bio',
         'links',
+        'affiliation',
+        'role',
+        'prefix',
+
     ];
 
     //add has many relation with polipeople_members
+
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class, 'polipeople_teams_members', 'member_id', 'team_id')
-                    ->withPivot('position')
-                    ->withTimestamps();
+        return $this->belongsToMany(Team::class, 'polipeople_teams_members', 'member_id', 'team_id');
     }
 
     // Supponendo che i campi si chiamino 'name' e 'last_name'
