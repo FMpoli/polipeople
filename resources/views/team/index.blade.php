@@ -16,7 +16,7 @@
 </div>
 <h2 x-data="{ isOpen: false }" class="mb-4 text-2xl font-semibold text-gray-800 dark:text-gray-200 lg:text-3xl lg:text-center">
     <!-- Pulsanti visibili solo su schermi grandi -->
-    <div class="justify-center hidden space-x-4 lg:flex">
+    <div class="justify-center hidden space-x-4 lg:flex mb-4">
         <a href="{{ route('team.index') }}"
            class="px-4 py-2 rounded-lg text-sm font-medium
                   {{ is_null($slug) ? 'bg-gray-700 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }}">
