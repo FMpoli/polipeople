@@ -4,5 +4,6 @@
 return [
     //Frontend
     'people_title' => 'People',
-    'no_results' => 'No results',
+    'no_results' => 'Nessun risultato',
+
 ];

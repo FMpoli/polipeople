@@ -36,15 +36,15 @@ class MemberResource extends Resource
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make(__('members.member'))
+                        Forms\Components\Section::make(__('polipeople::members.member'))
                         ->schema([
                             TextInput::make('prefix')
-                                ->label(__('members.prefix'))
+                                ->label(__('polipeople::members.prefix'))
                                 ->required()
                                 ->autocapitalize('words')
                                 ->maxLength(255),
                             TextInput::make('name')
-                                ->label(__('members.name'))
+                                ->label(__('polipeople::members.name'))
                                 ->required()
                                 ->live(debounce: 500)
                                 ->autocapitalize('words')
@@ -56,7 +56,7 @@ class MemberResource extends Resource
                                 })
                                 ->maxLength(255),
                             TextInput::make('last_name')
-                                ->label(__('members.last_name'))
+                                ->label(__('polipeople::members.last_name'))
                                 ->required()
                                 ->live(debounce: 500)
                                 ->autocapitalize('words')
@@ -68,18 +68,22 @@ class MemberResource extends Resource
                                 })
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('slug')
-                                ->label(__('members.slug'))
+                                ->label(__('polipeople::members.slug'))
+                                ->hidden()
                                 ->required()
                                 ->maxLength(255),
+                            Forms\Components\TextInput::make('handle')
+                                ->label(__('polipeople::members.publication_handle'))
+                                ->maxLength(255),
                             Forms\Components\TextInput::make('affiliation')
-                                ->label(__('members.affiliation'))
+                                ->label(__('polipeople::members.affiliation'))
                                 ->columnSpanFull(),
                             Forms\Components\Textarea::make('bio')
-                                ->label(__('members.bio'))
+                                ->label(__('polipeople::members.bio'))
                                 ->columnSpanFull(),
 
                             Forms\Components\Toggle::make('is_published')
-                                ->label(__('members.is_published'))
+                                ->label(__('polipeople::members.is_published'))
                                 ->required(),
                         ])->columns(4),
 
@@ -88,12 +92,12 @@ class MemberResource extends Resource
                     ->schema([
                         Forms\Components\CheckboxList::make('teams')
                                 ->options(Team::pluck('name')->toArray())
-                                ->label(__('members.teams'))
+                                ->label(__('polipeople::members.teams'))
                                 ->relationship(name: 'teams', titleAttribute: 'name')
                                 ->columnSpan(3)
                                 ->required(),
                         Forms\Components\Repeater::make('links')
-                            ->label(__('members.links'))
+                            ->label(__('polipeople::members.links'))
                             ->collapsible()
                             ->columnSpan(3)
                             ->collapsed()
@@ -101,22 +105,22 @@ class MemberResource extends Resource
                             ->itemLabel(fn (array $state): ?string => $state['link_text'] ?? null)
                             ->schema([
                                 Forms\Components\TextInput::make('link_text')
-                                    ->label(__('members.link_text'))
+                                    ->label(__('polipeople::members.link_text'))
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('url')
-                                    ->label(__('members.url'))
+                                    ->label(__('polipeople::members.url'))
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\Toggle::make('is_new_tab')
-                                    ->label(__('members.open_new_tab')),
+                                    ->label(__('polipeople::members.open_new_tab')),
                                 IconPicker::make('icon')
-                                    ->label(__('members.icon'))
+                                    ->label(__('polipeople::members.icon'))
                                     ->default('heroicon-o-academic-cap')
                                     ->label('Icon'),
                             ]),
                             CuratorPicker::make('avatar')
-                            ->label(__('member.avatar'))
+                            ->label(__('polipeople::members.avatar'))
                             ->columnSpan(3),
 
                     ])->columnSpan(1)
