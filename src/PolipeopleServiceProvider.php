@@ -10,7 +10,7 @@ use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use detit\Polipeople\Commands\PolipeopleCommand;
+use Detit\Polipeople\Commands\PolipeopleCommand;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 
 class PolipeopleServiceProvider extends PackageServiceProvider
