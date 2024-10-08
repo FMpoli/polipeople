@@ -12,17 +12,17 @@
         {{ __('polipeople::polipeople.people_title') }}<br/><small>{{ $teams->firstWhere('slug', $slug)->name ?? __('polipeople::polipeople.people_title') }}</small>
 
         @endif --}}
-    </h1> 
+    </h1>
 </div>
 <h2 x-data="{ isOpen: false }" class="mb-4 text-2xl font-semibold text-gray-800 dark:text-gray-200 lg:text-3xl lg:text-center">
     <!-- Pulsanti visibili solo su schermi grandi -->
-    <div class="justify-center hidden space-x-4 lg:flex mb-4">
+    <div class="justify-center hidden mb-4 space-x-4 lg:flex">
         <a href="{{ route('team.index') }}"
            class="px-4 py-2 rounded-lg text-sm font-medium
                   {{ is_null($slug) ? 'bg-gray-700 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }}">
             All
         </a>
-        
+
         @foreach ($teams as $team)
             <a href="{{ route('team.show', ['slug' => $team->slug]) }}"
                class="px-4 py-2 rounded-lg text-sm font-medium
@@ -57,9 +57,9 @@
     </div>
 </h2>
 @if($teams->firstWhere('slug', $slug))
-    <h1 class="mb-4 mt-8 text-4xl font-bold tracking-tight text-left text-gray-900 uppercase lg:font-extrabold text-xl lg:text-2xl lg:leading-none dark:text-white lg:text-left">{{ $teams->firstWhere('slug', $slug)->name }}</h1>
+    <h1 class="mt-8 mb-4 text-xl text-4xl font-bold tracking-tight text-left text-gray-900 uppercase lg:font-extrabold lg:text-2xl lg:leading-none dark:text-white lg:text-left">{{ $teams->firstWhere('slug', $slug)->name }}</h1>
 
-    <p class="mt-4 text-lg prose prose-xl text-gray-600  max-w-6xl py-4">
+    <p class="mt-4 text-lg prose prose-xl text-gray-600 !max-w-none py-4">
             {{ $teams->firstWhere('slug', $slug)->description }}
     </p>
 @endif
