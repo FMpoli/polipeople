@@ -1,6 +1,6 @@
 <?php
 
-namespace detit\Polipeople\Tests;
+namespace Detit\Polipeople\Tests;
 
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;

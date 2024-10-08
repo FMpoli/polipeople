@@ -1,6 +1,6 @@
 <?php
 
-namespace detit\Polipeople\Testing;
+namespace Detit\Polipeople\Testing;
 
 use Livewire\Features\SupportTesting\Testable;
 

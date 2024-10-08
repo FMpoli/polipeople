@@ -1,6 +1,6 @@
 <?php
 
-namespace detit\Polipeople\Facades;
+namespace Detit\Polipeople\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

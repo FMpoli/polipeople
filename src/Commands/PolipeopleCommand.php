@@ -1,6 +1,6 @@
 <?php
 
-namespace detit\Polipeople\Commands;
+namespace Detit\Polipeople\Commands;
 
 use Illuminate\Console\Command;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace detit\Polipeople\Database\Factories;
+namespace Detit\Polipeople\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace detit\Polipeople;
+namespace Detit\Polipeople;
 
 class Polipeople
 {
