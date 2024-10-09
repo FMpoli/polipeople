@@ -13,7 +13,6 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Detit\Polipeople\Commands\PolipeopleCommand;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Log;
 class PolipeopleServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'polipeople';
@@ -58,13 +57,11 @@ class PolipeopleServiceProvider extends PackageServiceProvider
             $package->hasViews(static::$viewNamespace);
         }
 
-        Log::info('Polipeople package configured.');
         $this->registerRoutes();
     }
 
     protected function registerRoutes(): void
     {
-        Log::info('Registering Polipeople routes.');
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
