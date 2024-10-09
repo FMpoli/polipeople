@@ -36,13 +36,13 @@
     },
     "autoload": {
         "psr-4": {
-            "detit\\Polipeople\\": "src/",
-            "detit\\Polipeople\\Database\\Factories\\": "database/factories/"
+            "Detit\\Polipeople\\": "src/",
+            "Detit\\Polipeople\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "detit\\Polipeople\\Tests\\": "tests/"
+            "Detit\\Polipeople\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -60,10 +60,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "detit\\Polipeople\\PolipeopleServiceProvider"
+                "Detit\\Polipeople\\PolipeopleServiceProvider"
             ],
             "aliases": {
-                "Polipeople": "detit\\Polipeople\\Facades\\Polipeople"
+                "Polipeople": "Detit\\Polipeople\\Facades\\Polipeople"
             }
         }
     },
