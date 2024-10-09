@@ -5,6 +5,7 @@ namespace Detit\Polipeople\Http\Controllers;
 use Detit\Polipeople\Models\Team;
 use Illuminate\Routing\Controller;
 use Detit\Polipeople\Models\Member;
+use Illuminate\Support\Facades\Log;
 
 class TeamController extends Controller
 {

@@ -11,6 +11,6 @@ class Polipeople extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \detit\Polipeople\Polipeople::class;
+        return \Detit\Polipeople\Polipeople::class;
     }
 }

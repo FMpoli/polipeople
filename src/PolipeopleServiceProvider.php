@@ -12,7 +12,8 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Detit\Polipeople\Commands\PolipeopleCommand;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
-
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
 class PolipeopleServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'polipeople';
@@ -28,15 +29,18 @@ class PolipeopleServiceProvider extends PackageServiceProvider
          */
         $package->name(static::$name)
             ->hasCommands($this->getCommands())
+            ->hasRoute('web')
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
                     ->publishMigrations()
                     ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub('detit/polipeople');
+                    ;
             });
 
         $configFileName = $package->shortName();
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'polipeople');
 
         if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
             $package->hasConfigFile();
@@ -53,6 +57,25 @@ class PolipeopleServiceProvider extends PackageServiceProvider
         if (file_exists($package->basePath('/../resources/views'))) {
             $package->hasViews(static::$viewNamespace);
         }
+
+        Log::info('Polipeople package configured.');
+        $this->registerRoutes();
+    }
+
+    protected function registerRoutes(): void
+    {
+        Log::info('Registering Polipeople routes.');
+        Route::group($this->routeConfiguration(), function () {
+            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        });
+    }
+
+    protected function routeConfiguration(): array
+    {
+        return [
+            'prefix' => config('polipeople.route_prefix', ''),
+            'middleware' => config('polipeople.middleware', ['web']),
+        ];
     }
 
     public function packageRegistered(): void {}

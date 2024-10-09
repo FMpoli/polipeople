@@ -1,4 +1,4 @@
-@extends('layouts.people')
+@extends('polipeople::layouts.team')
 @section('title')
     People
 @endsection

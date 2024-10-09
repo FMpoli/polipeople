@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
-use detit\Polipeople\PolipeopleServiceProvider;
+use Detit\Polipeople\PolipeopleServiceProvider;
 
 class TestCase extends Orchestra
 {

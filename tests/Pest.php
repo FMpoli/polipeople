@@ -1,5 +1,5 @@
 <?php
 
-use detit\Polipeople\Tests\TestCase;
+use Detit\Polipeople\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

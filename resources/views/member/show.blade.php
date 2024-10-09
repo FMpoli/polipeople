@@ -1,4 +1,4 @@
-@extends('layouts.news')
+@extends('polipeople::layouts.member')
 @section('title')
     {{ $member->name }} {{ $member->last_name }}
 @endsection
