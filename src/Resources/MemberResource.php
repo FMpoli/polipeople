@@ -69,7 +69,6 @@ class MemberResource extends Resource
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('slug')
                                 ->label(__('polipeople::members.slug'))
-                                ->hidden()
                                 ->required()
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('handle')
@@ -96,6 +95,9 @@ class MemberResource extends Resource
                                 ->relationship(name: 'teams', titleAttribute: 'name')
                                 ->columnSpan(3)
                                 ->required(),
+                        CuratorPicker::make('avatar')
+                                ->label(__('polipeople::members.avatar'))
+                                ->columnSpan(3),
                         Forms\Components\Repeater::make('links')
                             ->label(__('polipeople::members.links'))
                             ->collapsible()
@@ -115,13 +117,12 @@ class MemberResource extends Resource
                                 Forms\Components\Toggle::make('is_new_tab')
                                     ->label(__('polipeople::members.open_new_tab')),
                                 IconPicker::make('icon')
+                                    ->searchable()
                                     ->label(__('polipeople::members.icon'))
                                     ->default('heroicon-o-academic-cap')
                                     ->label('Icon'),
                             ]),
-                            CuratorPicker::make('avatar')
-                            ->label(__('polipeople::members.avatar'))
-                            ->columnSpan(3),
+
 
                     ])->columnSpan(1)
             ])->columns(3);
