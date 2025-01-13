@@ -77,6 +77,9 @@ class MemberResource extends Resource
                             Forms\Components\TextInput::make('affiliation')
                                 ->label(__('polipeople::members.affiliation'))
                                 ->columnSpanFull(),
+                            Forms\Components\TextInput::make('role')
+                                ->label(__('polipeople::members.role'))
+                                ->columnSpanFull(),
                             Forms\Components\Textarea::make('bio')
                                 ->label(__('polipeople::members.bio'))
                                 ->columnSpanFull(),

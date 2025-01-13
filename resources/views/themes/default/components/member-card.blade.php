@@ -1,9 +1,27 @@
-<div class="bg-white rounded-lg shadow-sm p-6">
+<div class="p-6 bg-white rounded-lg shadow-sm">
     @if($member->avatar)
-        <img src="{{ $member->avatar }}" alt="{{ $member->name }}" class="w-32 h-32 rounded-full mx-auto mb-4">
+        <x-curator-curation
+            :media="$member->avatar"
+            curation="polipeoplethumbnail"
+            loading="lazy"
+            class="object-cover w-32 h-32 mx-auto mb-4 rounded-full"
+            alt="{{ $member->name }}"
+        />
     @endif
-    <h3 class="text-xl font-bold text-center mb-2">{{ $member->name }}</h3>
+
+    @if ($member->avatar->hasCuration('polipeoplethumbnail'))
+        <x-curator-curation :media="$member->avatar" curation="polipeoplethumbnail"/>
+    @else
+        <x-curator-glider
+            class="object-cover w-auto"
+            :media="$member->avatar"
+            :width="$preset->getWidth()"
+            :height="$preset->getHeight()"
+        />
+    @endif
+
+    <h3 class="mb-2 text-xl font-bold text-center">{{ $member->name }}</h3>
     @if($member->role)
-        <p class="text-gray-600 text-center">{{ $member->role }}</p>
+        <p class="text-center text-gray-600">{{ $member->role }}</p>
     @endif
 </div>

@@ -4,13 +4,14 @@
     @if($member->avatar)
         <x-curator-curation
             curation="polipeoplethumbnail"
-            :media="$member->avatar"
+            :media-id="$member->avatar"
             class="object-cover w-full h-48 mb-4 rounded-lg"
+            alt="{{ $member->prefix }} {{ $member->name }} {{ $member->last_name }}"
         />
     @endif
 
     <div class="space-y-2">
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+        <h3 class="text-xl font-bold text-neutral-900 dark:text-white">
             {{ $member->prefix }} {{ $member->name }} {{ $member->last_name }}
         </h3>
 
@@ -22,7 +23,8 @@
             <p class="text-sm text-gray-500 dark:text-gray-400">{{ $member->role }}</p>
         @endif
 
-        @if($member->teams && $member->teams->isNotEmpty())
+        @if($member->teams)
+        666
             <div class="flex flex-wrap gap-2">
                 @foreach($member->teams as $team)
                     <span class="px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">

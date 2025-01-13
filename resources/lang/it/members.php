@@ -19,5 +19,6 @@ return [
     'url' => 'URL',
     'open_new_tab' => 'Apri in una nuova scheda',
     'avatar' => 'Foto',
+    'role' => 'Ruolo',
 
 ];

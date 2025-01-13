@@ -7,6 +7,7 @@ use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
 use Detit\Polipeople\Models\PolipeopleTeam;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Awcodes\Curator\Models\Media;
 /**
  * @property string $id
 * @property string $name
@@ -44,7 +45,6 @@ class Member extends Model
         'is_published' => 'boolean',
         'links' => 'array',
         'teams' => 'array',
-        'avatar' => 'array',
     ];
 
     protected $translatable = [
@@ -78,6 +78,11 @@ class Member extends Model
     public function scopePublished(Builder $query)
     {
         return $query->where('is_published', true);
+    }
+
+    public function avatar()
+    {
+        return $this->belongsTo(Media::class, 'avatar_id');
     }
 
 }

@@ -19,4 +19,5 @@ return [
     'url' => 'URL',
     'open_new_tab' => 'Open in a new tab',
     'avatar' => 'Avatar',
+    'role' => 'Role',
 ];
