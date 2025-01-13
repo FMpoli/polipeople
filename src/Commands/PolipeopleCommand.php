@@ -23,6 +23,8 @@ class PolipeopleCommand extends Command
                 return $this->publishViews();
             case 'publish-config':
                 return $this->publishConfig();
+            case 'publish-translations':
+                return $this->publishTranslations();
             default:
                 $this->error("Invalid action. Use 'install', 'publish-views', or 'publish-config'.");
                 return self::FAILURE;
@@ -81,6 +83,19 @@ class PolipeopleCommand extends Command
         ]);
 
         $this->info('Polipeople config has been published successfully!');
+        return self::SUCCESS;
+    }
+
+    protected function publishTranslations(): int
+    {
+        $this->info('Publishing Polipeople translations...');
+
+        $this->call('vendor:publish', [
+            '--provider' => 'Detit\Polipeople\PolipeopleServiceProvider',
+            '--tag' => 'polipeople-translations'
+        ]);
+
+        $this->info('Polipeople translations have been published successfully!');
         return self::SUCCESS;
     }
 }

@@ -28,12 +28,7 @@ class Team extends Model
         'position'
     ];
 
-    protected $translatable = [
-        'name',
-        'slug',
-        'description'
-    ];
-
+    public $translatable = ['name', 'slug', 'description'];
 
     //add has many relation with polipeople_members
 

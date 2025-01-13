@@ -1,13 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Detit\Polipeople\Http\Controllers\MemberController;
 use Detit\Polipeople\Http\Controllers\TeamController;
+use Detit\Polipeople\Http\Controllers\MemberController;
 
-Route::group(['middleware' => ['web']], function () {
-    // Route::get(__('polipeople::messages.team'), [TeamController::class, 'index'])->name('team.index');
-    Route::get('/people', [TeamController::class, 'index'])->name('team.index');
-    Route::get('/people/{slug}', [MemberController::class, 'show'])->name('people.show');
-    Route::get('/people/c/{slug?}', [TeamController::class, 'index'])->name('team.show');
+// Route per il plugin standalone (usate solo quando il tema non è attivo)
+Route::prefix('people')->group(function () {
+    Route::get('/', [TeamController::class, 'index'])->name('teams.index');
+    Route::get('/{slug}', [TeamController::class, 'show'])->name('teams.show');
 });
 
