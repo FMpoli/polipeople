@@ -51,10 +51,28 @@ class PolipeopleServiceProvider extends PackageServiceProvider
         }
 
         $this->publishes($publishArray, 'polipeople-translations');
+
+        $this->publishes([
+            __DIR__.'/../resources/js' => resource_path('js/vendor/polipeople'),
+        ], 'polipeople-scripts');
     }
 
     public function packageBooted(): void
     {
+        parent::packageBooted();
+
+        // Se il plugin pages è presente, registra il blocco
+        if (class_exists(\Base33\Pages\PagesServiceProvider::class)) {
+            $this->loadViewsFrom(__DIR__.'/../resources/views', 'pages');
+
+            \Base33\Pages\Resources\PageResource::registerBlock(
+                \Detit\Polipeople\Resources\PageResource\Blocks\TeamList::make()
+            );
+
+            // Aggiungi il tipo di blocco all'array canOverlapTypes
+            \Base33\Pages\Resources\PageResource::registerOverlappableBlock('polipeople-team-list');
+        }
+
         // Validazione del tema
         $theme = config('polipeople.theme');
 
@@ -168,5 +186,10 @@ class PolipeopleServiceProvider extends PackageServiceProvider
             'create_polipeople_teams_members_table',
             'update_polipeople_members_table',
         ];
+    }
+
+    public function boot()
+    {
+        parent::boot();
     }
 }
