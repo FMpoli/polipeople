@@ -61,7 +61,7 @@ class PolipeopleServiceProvider extends PackageServiceProvider
     {
         parent::packageBooted();
 
-        // Se il plugin pages è presente, registra il blocco
+        // Se il plugin pages è presente, registra i blocchi
         if (class_exists(\Base33\Pages\PagesServiceProvider::class)) {
             $this->loadViewsFrom(__DIR__.'/../resources/views', 'pages');
 
@@ -69,101 +69,14 @@ class PolipeopleServiceProvider extends PackageServiceProvider
                 \Detit\Polipeople\Resources\PageResource\Blocks\TeamList::make()
             );
 
-            // Aggiungi il tipo di blocco all'array canOverlapTypes
+            \Base33\Pages\Resources\PageResource::registerBlock(
+                \Detit\Polipeople\Resources\PageResource\Blocks\MemberDetail::make()
+            );
+
+            // Aggiungi i tipi di blocco all'array canOverlapTypes
             \Base33\Pages\Resources\PageResource::registerOverlappableBlock('polipeople-team-list');
+            \Base33\Pages\Resources\PageResource::registerOverlappableBlock('polipeople-member-detail');
         }
-
-        // Validazione del tema
-        $theme = config('polipeople.theme');
-
-        // Se la configurazione non esiste, usa i valori di default
-        if (!$theme) {
-            $theme = [
-                'use_default' => true,
-                'theme' => 'default',
-                'views_path' => 'themes.default.views.polipeople',
-                'layout' => [
-                    'default' => 'themes.default.layouts.default',
-                    'team' => 'themes.default.layouts.team',
-                ],
-                'components' => [
-                    'team_card' => 'themes.default.components.team-card',
-                    'member_card' => 'themes.default.components.member-card',
-                ],
-            ];
-        }
-
-        if (!$theme['use_default']) {
-            // Verifica che il tema esista
-            $viewsPath = resource_path('views/themes/' . $theme['theme']);
-            if (!file_exists($viewsPath)) {
-                throw new \RuntimeException(
-                    __('polipeople::messages.theme.not_found', ['theme' => $theme['theme']])
-                );
-            }
-
-            // Verifica che i layout esistano
-            foreach ($theme['layout'] as $key => $path) {
-                $layoutPath = str_replace('themes.' . $theme['theme'], 'themes/' . $theme['theme'], $path);
-                $fullPath = resource_path('views/' . str_replace('.', '/', $layoutPath) . '.blade.php');
-                if (!file_exists($fullPath)) {
-                    throw new \RuntimeException(
-                        __('polipeople::messages.theme.layout_not_found', ['path' => $path])
-                    );
-                }
-            }
-
-            // Verifica che i componenti esistano
-            foreach ($theme['components'] as $key => $path) {
-                $componentPath = str_replace('themes.' . $theme['theme'], 'themes/' . $theme['theme'], $path);
-                $fullPath = resource_path('views/' . str_replace('.', '/', $componentPath) . '.blade.php');
-                if (!file_exists($fullPath)) {
-                    throw new \RuntimeException(
-                        __('polipeople::messages.theme.component_not_found', ['path' => $path])
-                    );
-                }
-            }
-        } else {
-            // Se usa il tema di default, verifica che i file esistano nel plugin
-            $basePath = __DIR__ . '/../resources/views/themes/default';
-
-            // Verifica che i layout esistano
-            foreach ($theme['layout'] as $key => $path) {
-                $layoutPath = str_replace('themes.default', '', $path);
-                $fullPath = $basePath . str_replace('.', '/', $layoutPath) . '.blade.php';
-                if (!file_exists($fullPath)) {
-                    throw new \RuntimeException(
-                        __('polipeople::messages.theme.layout_not_found', ['path' => $path])
-                    );
-                }
-            }
-
-            // Verifica che i componenti esistano
-            foreach ($theme['components'] as $key => $path) {
-                $componentPath = str_replace('themes.default', '', $path);
-                $fullPath = $basePath . str_replace('.', '/', $componentPath) . '.blade.php';
-                if (!file_exists($fullPath)) {
-                    throw new \RuntimeException(
-                        __('polipeople::messages.theme.component_not_found', ['path' => $path])
-                    );
-                }
-            }
-        }
-
-        // Registra il middleware
-        $router = $this->app['router'];
-        $router->aliasMiddleware('localize-team-urls', \Detit\Polipeople\Http\Middleware\LocalizeTeamUrls::class);
-
-        // Registra le rotte del plugin solo se non esistono quelle del tema
-        $this->app->booted(function () {
-            if (!Route::has('teams')) {
-                Route::middleware(config('polipeople.middleware', ['web']))
-                    ->name('polipeople.')
-                    ->group(function () {
-                        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-                    });
-            }
-        });
 
         // Register components
         Blade::component('polipeople::components.team-list', 'polipeople::team-list');

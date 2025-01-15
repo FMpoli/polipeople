@@ -2,6 +2,7 @@
 
 namespace Detit\Polipeople\Resources\PageResource\Blocks;
 
+use Base33\Pages\Models\Page;
 use Detit\Polipeople\Models\Team;
 use Detit\Polipeople\Models\Member;
 use Filament\Forms\Components\Grid;
@@ -35,44 +36,57 @@ class TeamList
                                 'bold',
                                 'italic',
                                 'link',
-                                'bulletList',
-                                'orderedList',
                             ]),
                         ColorPicker::make('background_color')
-                            ->label('Background Color'),
-                        Toggle::make('is_overlapped')
-                            ->label('Enable Overlap')
-                            ->helperText(trans('polipeople::blocks.team_list.overlap_description'))
-                            ->default(false),
+                            ->label('Background Color')
+                            ->default('#ffffff'),
                     ]),
 
                 Section::make('Display Options')
                     ->schema([
                         Toggle::make('show_filters')
-                            ->label('Show Team Filters')
-                            ->helperText('Enable team filtering navigation')
+                            ->label('Show Filters')
                             ->default(true),
 
-                        Select::make('display_mode')
-                            ->label('Display Mode')
-                            ->options([
-                                'all' => 'All Members',
-                                'team' => 'Single Team',
-                                'selection' => 'Selected Members',
-                            ])
-                            ->default('all')
-                            ->reactive(),
+                        Select::make('member_detail_page')
+                            ->label('Member Detail Page')
+                            ->options(function() {
+                                // Cerca tutte le pagine che contengono il blocco member-detail
+                                return Page::where('is_published', true)
+                                    ->where('content', 'like', '%polipeople-member-detail%')
+                                    ->get()
+                                    ->mapWithKeys(function ($page) {
+                                        // Rimuovi il prefisso della lingua dallo slug
+                                        $slug = preg_replace('/^[a-z]{2}-/', '', $page->slug);
+                                        return [$slug => $page->title . ' (' . $page->language . ')'];
+                                    });
+                            })
+                            ->helperText('Select the page that will display member details')
+                            ->required(),
 
-                        Select::make('team_id')
-                            ->label('Team')
-                            ->options(fn () => Team::all()->pluck('name', 'id'))
-                            ->visible(fn (callable $get) => $get('display_mode') === 'team'),
+                        Grid::make(2)
+                            ->schema([
+                                Select::make('display_mode')
+                                    ->label('Display Mode')
+                                    ->options([
+                                        'all' => 'All Members',
+                                        'team' => 'Single Team',
+                                        'selection' => 'Selected Members',
+                                    ])
+                                    ->default('all')
+                                    ->reactive(),
 
-                        CheckboxList::make('selected_members')
-                            ->label('Select Members')
-                            ->options(fn () => Member::published()->get()->pluck('full_name', 'id'))
-                            ->visible(fn (callable $get) => $get('display_mode') === 'selection')
-                            ->columns(2),
+                                Select::make('team_id')
+                                    ->label('Team')
+                                    ->options(fn () => Team::all()->pluck('name', 'id'))
+                                    ->visible(fn (callable $get) => $get('display_mode') === 'team'),
+
+                                CheckboxList::make('selected_members')
+                                    ->label('Select Members')
+                                    ->options(fn () => Member::published()->get()->pluck('full_name', 'id'))
+                                    ->visible(fn (callable $get) => $get('display_mode') === 'selection')
+                                    ->columns(2),
+                            ]),
                     ]),
             ]);
     }
