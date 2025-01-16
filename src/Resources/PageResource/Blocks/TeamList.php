@@ -51,14 +51,12 @@ class TeamList
                         Select::make('member_detail_page')
                             ->label('Member Detail Page')
                             ->options(function() {
-                                // Cerca tutte le pagine che contengono il blocco member-detail
                                 return Page::where('is_published', true)
-                                    ->where('content', 'like', '%polipeople-member-detail%')
+                                    ->where('content', 'like', '%member-detail%')
                                     ->get()
                                     ->mapWithKeys(function ($page) {
-                                        // Rimuovi il prefisso della lingua dallo slug
-                                        $slug = preg_replace('/^[a-z]{2}-/', '', $page->slug);
-                                        return [$slug => $page->title . ' (' . $page->language . ')'];
+                                        $cleanSlug = preg_replace('/^[a-z]{2}-/', '', $page->slug);
+                                        return [$cleanSlug => $page->title . ' (' . strtoupper($page->language) . ')'];
                                     });
                             })
                             ->helperText('Select the page that will display member details')

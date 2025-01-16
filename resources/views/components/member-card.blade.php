@@ -1,7 +1,10 @@
-@props(['member'])
+@props(['member', 'block' => ['data' => ['member_detail_page' => '']], 'defaultDetailPage' => '', 'href' => '#'])
 
 <div class="p-6 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-    <a href="{{ '/' . ($block['data']['member_detail_page'] ?? 'member-profile') . '?member=' . $member->slug }}" class="block">
+    <a href="{{ $href }}"
+       data-member="{{ $member->slug }}"
+       data-preserve-params="member"
+       class="block member-link">
         @if($member->avatar)
             @php
                 $media = \Awcodes\Curator\Models\Media::find($member->avatar);

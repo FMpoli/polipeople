@@ -1,6 +1,6 @@
 <div class="px-4 py-3">
     <div class="flex items-center gap-4">
-        <div class="flex-shrink-0 w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+        <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 bg-gray-100 rounded-lg">
             @svg('heroicon-m-user', 'w-6 h-6 text-gray-500')
         </div>
         <div>

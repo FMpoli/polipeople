@@ -1,7 +1,8 @@
-@props(['slug' => null, 'teams', 'members', 'currentTeam' => null, 'showFilters' => true])
+@props(['slug' => null, 'teams', 'members', 'currentTeam' => null, 'showFilters' => true, 'block' => null])
 
 @php
-    $routePrefix = Route::has('teams') ? '' : 'polipeople.';
+
+$routePrefix = Route::has('teams') ? '' : 'polipeople.';
     $routeName = $routePrefix . 'teams';
     $routeShowName = $routePrefix . 'teams.show';
 @endphp
@@ -37,7 +38,20 @@
             @if($members->isNotEmpty())
                 <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                     @foreach($members as $member)
-                        <x-polipeople::member-card :member="$member" />
+                        @php
+                            $url = !empty($block['data']['member_detail_page'])
+                                ? '/' . $block['data']['member_detail_page'] . '?member=' . $member->slug
+                                : '#';
+
+                            // Salva i parametri query in sessione quando clicchiamo sul link
+                            Session::put('member_params', 'member=' . $member->slug);
+                        @endphp
+
+                        <x-polipeople::member-card
+                            :member="$member"
+                            :block="$block"
+                            :href="$url"
+                        />
                     @endforeach
                 </div>
             @else

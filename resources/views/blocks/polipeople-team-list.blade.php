@@ -43,6 +43,10 @@
                     break;
             }
 
+            // Rimuovi questa duplicazione
+            // $currentParams = request()->except(['lang', '_token']);
+            // $currentMember = request()->query('member');
+
             // Ottieni tutti i blocchi della pagina
             //$pageBlocks = $page->content ?? [];
 
@@ -64,6 +68,7 @@
             :currentTeam="$currentTeam ?? null"
             :slug="$selectedTeamSlug ?? null"
             :showFilters="$block['data']['show_filters'] ?? true"
+            :block="$block"
         />
     </div>
 </section>

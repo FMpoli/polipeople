@@ -1,84 +1,67 @@
 @php
-    // Ottieni il membro dallo slug nell'URL
     $memberSlug = request()->query('member');
-    $member = \Detit\Polipeople\Models\Member::where('slug', $memberSlug)
-        ->where('is_published', true)
-        ->first();
+    $member = \Detit\Polipeople\Models\Member::where('slug', $memberSlug)->published()->first();
 @endphp
+<section class="prose-custom">
+    <div class="{{ $isOverlapped ? 'rounded-t-xl' : '' }} {{ $isLastBlock ? 'rounded-b-xl' : '' }} px-4 py-8 mx-auto max-w-7xl md:pb-16 md:pt-20 lg:px-6"
+         style="background-color: {{ $block['data']['background_color'] }}">
 
-@if($member)
-<div class="prose max-w-none">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {{-- Colonna sinistra con foto e info base --}}
-        <div class="md:col-span-1">
-            @if($member->avatar)
-                @php
-                    $media = \Awcodes\Curator\Models\Media::find($member->avatar);
-                @endphp
-                @if($media)
-                    <x-curator-glider
-                        :media="$media"
-                        class="w-full rounded-lg shadow-lg mb-4"
-                        alt="{{ $member->prefix }} {{ $member->name }} {{ $member->last_name }}"
-                    />
-                @endif
-            @endif
-
-            <div class="bg-white rounded-lg shadow-sm p-6 dark:bg-gray-800">
-                <h2 class="text-2xl font-bold mb-2">
-                    {{ $member->prefix }} {{ $member->name }} {{ $member->last_name }}
-                </h2>
-                @if($member->role)
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">{{ $member->role }}</p>
-                @endif
-                @if($member->affiliation)
-                    <p class="text-gray-600 dark:text-gray-400">{{ $member->affiliation }}</p>
-                @endif
-
-                @if($block['data']['show_social'] && !empty($member->getTranslation('links', app()->getLocale())))
-                    <div class="flex items-center gap-3 mt-4">
-                        @foreach($member->getTranslation('links', app()->getLocale()) as $linkId => $linkData)
-                            <a href="{{ $linkData['url'] }}"
-                               @if($linkData['is_new_tab']) target="_blank" rel="noopener noreferrer" @endif
-                               class="inline-flex items-center justify-center w-10 h-10 text-gray-500 bg-gray-100 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
-                               title="{{ $linkData['link_text'] }}">
-                                @svg('heroicon-' . Str::after($linkData['icon'], 'heroicon-'), 'w-5 h-5')
-                                <span class="sr-only">{{ $linkData['link_text'] }}</span>
-                            </a>
-                        @endforeach
+        @if($member)
+            <div class="container px-4 mx-auto">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Header con immagine profilo -->
+                    <div class="relative mb-8">
+                        @if($member->avatar)
+                            <x-curator-glider
+                                :media="$member->avatar"
+                                class="object-cover w-full h-64 rounded-xl"
+                                alt="{{ $member->prefix }} {{ $member->name }} {{ $member->last_name }}"
+                            />
+                        @endif
                     </div>
-                @endif
-            </div>
-        </div>
 
-        {{-- Colonna destra con bio e altri dettagli --}}
-        <div class="md:col-span-2">
-            @if($member->bio)
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6 dark:bg-gray-800">
-                    <h3 class="text-xl font-semibold mb-4">{{ __('polipeople::members.bio') }}</h3>
-                    <div class="prose dark:prose-invert">
-                        {!! $member->bio !!}
-                    </div>
-                </div>
-            @endif
+                    <!-- Info principali -->
+                    <div class="prose prose-lg max-w-none">
+                        <h1>{{ $member->prefix }} {{ $member->name }} {{ $member->last_name }}</h1>
 
-            @if(($block['data']['show_teams'] ?? true) && $member->teams && $member->teams->count() > 0)
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6 dark:bg-gray-800">
-                    <h3 class="text-xl font-semibold mb-4">{{ __('polipeople::members.teams') }}</h3>
-                    <div class="space-y-2">
-                        @foreach($member->teams as $team)
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-600 dark:text-gray-400">{{ $team->name }}</span>
+                        @if($member->role)
+                            <h2 class="text-xl text-gray-600">
+                                {{ $member->getTranslation('role', app()->getLocale()) }}
+                            </h2>
+                        @endif
+
+                        @if($member->affiliation)
+                            <p class="text-gray-500">
+                                {{ $member->getTranslation('affiliation', app()->getLocale()) }}
+                            </p>
+                        @endif
+
+                        @if($member->bio)
+                            <div class="mt-8">
+                                {!! $member->getTranslation('bio', app()->getLocale()) !!}
                             </div>
-                        @endforeach
+                        @endif
+
+                        @if($member->links)
+                            <div class="flex gap-4 mt-8">
+                                @foreach($member->getTranslation('links', app()->getLocale()) as $linkId => $linkData)
+                                    <a href="{{ $linkData['url'] }}"
+                                       @if($linkData['is_new_tab']) target="_blank" rel="noopener noreferrer" @endif
+                                       class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                                       title="{{ $linkData['link_text'] }}">
+                                        @svg('heroicon-' . Str::after($linkData['icon'], 'heroicon-'), 'w-5 h-5 mr-2')
+                                        {{ $linkData['link_text'] }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 </div>
-            @endif
-        </div>
+            </div>
+        @else
+            <div class="text-center">
+                <h2 class="text-xl text-gray-600">{{ __('Member not found') }}</h2>
+            </div>
+        @endif
     </div>
-</div>
-@else
-    <div class="text-center py-12">
-        <p class="text-gray-600 dark:text-gray-400">{{ __('polipeople::messages.member_not_found') }}</p>
-    </div>
-@endif
+</section>

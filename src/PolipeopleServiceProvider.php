@@ -73,7 +73,6 @@ class PolipeopleServiceProvider extends PackageServiceProvider
                 \Detit\Polipeople\Resources\PageResource\Blocks\MemberDetail::make()
             );
 
-            // Aggiungi i tipi di blocco all'array canOverlapTypes
             \Base33\Pages\Resources\PageResource::registerOverlappableBlock('polipeople-team-list');
             \Base33\Pages\Resources\PageResource::registerOverlappableBlock('polipeople-member-detail');
         }
