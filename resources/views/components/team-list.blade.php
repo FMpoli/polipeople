@@ -36,7 +36,7 @@ $routePrefix = Route::has('teams') ? '' : 'polipeople.';
             @endif
 
             @if($members->isNotEmpty())
-                <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
                     @foreach($members as $member)
                         @php
                             $url = !empty($block['data']['member_detail_page'])

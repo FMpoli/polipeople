@@ -1,10 +1,7 @@
 @props(['member', 'block' => ['data' => ['member_detail_page' => '']], 'defaultDetailPage' => '', 'href' => '#'])
 
-<div class="p-6 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-    <a href="{{ $href }}"
-       data-member="{{ $member->slug }}"
-       data-preserve-params="member"
-       class="block member-link">
+<div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-xl">
+    <div class="flex flex-col items-center h-full gap-8 sm:flex-row">
         @if($member->avatar)
             @php
                 $media = \Awcodes\Curator\Models\Media::find($member->avatar);
@@ -13,46 +10,46 @@
                 <x-curator-glider
                     curation="polipeoplethumbnail"
                     :media="$media"
-                    class="object-cover w-full mb-4 rounded-lg h-60"
+                    class="flex-shrink-0 object-cover object-center w-48 h-48 rounded-lg shadow-lg"
                     alt="{{ $member->prefix }} {{ $member->name }} {{ $member->last_name }}"
                 />
             @endif
         @endif
 
-        <div class="text-center">
-            <h3 class="mb-1 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                {{ $member->prefix }} {{ $member->name }} {{ $member->last_name }}
-            </h3>
+        <div class="flex-grow space-y-4">
+            <a href="{{ $href }}"
+               data-member="{{ $member->slug }}"
+               data-preserve-params="member"
+               class="member-link">
+                <h2 class="text-gray-900 dark:text-white">
+                    {{ $member->prefix }} {{ $member->name }} {{ $member->last_name }}
+                </h2>
+            </a>
 
             @if($member->role)
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                <h3 class="text-primary dark:text-primary-light">
                     {{ $member->getTranslation('role', app()->getLocale()) }}
-                </p>
+                </h3>
             @endif
 
             @if($member->affiliation)
-                <p class="mb-3 text-sm text-gray-600 dark:text-gray-500">
+                <p class="text-gray-600 dark:text-gray-300">
                     {{ $member->getTranslation('affiliation', app()->getLocale()) }}
                 </p>
             @endif
 
-            @php
-                $links = $member->getTranslation('links', app()->getLocale());
-            @endphp
-
-            @if(!empty($links))
-                <div class="flex items-center justify-center gap-3">
-                    @foreach($links as $linkId => $linkData)
+            @if($member->links)
+                <div class="flex gap-4 pt-2">
+                    @foreach($member->getTranslation('links', app()->getLocale()) as $linkId => $linkData)
                         <a href="{{ $linkData['url'] }}"
                            @if($linkData['is_new_tab']) target="_blank" rel="noopener noreferrer" @endif
-                           class="inline-flex items-center justify-center w-10 h-10 text-gray-500 bg-gray-100 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+                           class="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary-light"
                            title="{{ $linkData['link_text'] }}">
                             @svg('heroicon-' . Str::after($linkData['icon'], 'heroicon-'), 'w-5 h-5')
-                            <span class="sr-only">{{ $linkData['link_text'] }}</span>
                         </a>
                     @endforeach
                 </div>
             @endif
         </div>
-    </a>
+    </div>
 </div>

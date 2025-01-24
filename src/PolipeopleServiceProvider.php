@@ -50,6 +50,10 @@ class PolipeopleServiceProvider extends PackageServiceProvider
             $publishArray[$langDir] = base_path("lang/vendor/polipeople/{$lang}");
         }
 
+        if (file_exists($package->basePath('/../database/migrations'))) {
+            $package->hasMigrations($this->getMigrations());
+        }
+
         $this->publishes($publishArray, 'polipeople-translations');
 
         $this->publishes([
@@ -72,9 +76,6 @@ class PolipeopleServiceProvider extends PackageServiceProvider
             \Base33\Pages\Resources\PageResource::registerBlock(
                 \Detit\Polipeople\Resources\PageResource\Blocks\MemberDetail::make()
             );
-
-            \Base33\Pages\Resources\PageResource::registerOverlappableBlock('polipeople-team-list');
-            \Base33\Pages\Resources\PageResource::registerOverlappableBlock('polipeople-member-detail');
         }
 
         // Register components

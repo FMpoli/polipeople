@@ -27,7 +27,6 @@ class MemberDetail
                         ColorPicker::make('background_color')
                             ->label('Background Color')
                             ->default('#ffffff'),
-
                     ]),
             ]);
     }
