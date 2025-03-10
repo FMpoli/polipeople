@@ -12,26 +12,13 @@ class TeamController extends Controller
 {
     public function index()
     {
-        return view('polipeople::team.index', [
-            'teams' => Team::with('members')->get(),
-            'members' => Member::published()->with('teams')->get(),
-            'slug' => null,
-            'currentTeam' => null
-        ]);
+        $teams = Team::orderBy('sort_order', 'asc')->get();
+        return view('polipeople::teams.index', compact('teams'));
     }
 
-    public function show($slug)
+    public function show(Team $team)
     {
-        $teams = Team::with('members')->get();
-        $team = $teams->first(function ($t) use ($slug) {
-            return collect($t->getTranslations('slug'))->contains($slug);
-        });
-
-        return view('polipeople::team.index', [
-            'teams' => $teams,
-            'members' => $team ? $team->members : collect(),
-            'slug' => $slug,
-            'currentTeam' => $team
-        ]);
+        $teams = Team::orderBy('sort_order', 'asc')->get();
+        return view('polipeople::teams.show', compact('team', 'teams'));
     }
 }

@@ -18,6 +18,7 @@ use TomatoPHP\FilamentIcons\Components\IconPicker;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Detit\Polipeople\Resources\MemberResource\Pages;
+use Illuminate\Database\Eloquent\Builder;
 
 class MemberResource extends Resource
 {
@@ -134,6 +135,9 @@ class MemberResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                return $query->orderBy('sort_order', 'asc');
+            })
             ->columns([
                 CuratorColumn::make('avatar')
                 ->label('')
@@ -165,18 +169,56 @@ class MemberResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
+                Tables\Columns\TextColumn::make('sort_order')
+                    ->sortable(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\Action::make('moveUp')
+                        ->label('Move Up')
+                        ->icon('heroicon-o-chevron-up')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->action(function (Member $record) {
+                            $query = Member::query()
+                                ->where('sort_order', '<', $record->sort_order)
+                                ->orderBy('sort_order', 'desc');
+
+                            if ($swapRecord = $query->first()) {
+                                $tempOrder = $record->sort_order;
+                                $record->update(['sort_order' => $swapRecord->sort_order]);
+                                $swapRecord->update(['sort_order' => $tempOrder]);
+                            }
+
+                            return true;
+                        }),
+                    Tables\Actions\Action::make('moveDown')
+                        ->label('Move Down')
+                        ->icon('heroicon-o-chevron-down')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->action(function (Member $record) {
+                            $query = Member::query()
+                                ->where('sort_order', '>', $record->sort_order)
+                                ->orderBy('sort_order', 'asc');
+
+                            if ($swapRecord = $query->first()) {
+                                $tempOrder = $record->sort_order;
+                                $record->update(['sort_order' => $swapRecord->sort_order]);
+                                $swapRecord->update(['sort_order' => $tempOrder]);
+                            }
+
+                            return true;
+                        }),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('sort_order', 'asc');
     }
 
     public static function getRelations(): array

@@ -27,6 +27,9 @@ class MemberDetail
                         ColorPicker::make('background_color')
                             ->label('Background Color')
                             ->default('#ffffff'),
+                        Toggle::make('overlap_previous')
+                            ->label('Overlap Previous Block')
+                            ->default(false),
                     ]),
             ]);
     }

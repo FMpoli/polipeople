@@ -21,11 +21,11 @@ class Team extends Model
      * @var array
      */
     protected $fillable = [
-        'id',
         'name',
         'slug',
         'description',
-        'position'
+        'image_id',
+        'sort_order',
     ];
 
     public $translatable = ['name', 'slug', 'description'];

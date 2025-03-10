@@ -1,6 +1,8 @@
-<section class="prose-custom">
-    <div
-        class="{{ $isOverlapped ? 'rounded-t-xl' : '' }} {{ $isLastBlock ? 'rounded-b-xl' : '' }} px-4 py-8 mx-auto max-w-7xl md:pb-16 md:pt-20 lg:px-6" style="background-color: {{ $block['data']['background_color'] }}">
+<section class="prose-custom {{ ($block['data']['overlap_previous'] ?? false) ? '-mt-80 lg:-mt-16 relative z-10' : '' }}">
+    <div class="px-4 mx-auto max-w-7xl md:pb-16 lg:px-6
+        {{ ($block['data']['overlap_previous'] ?? false) ? 'rounded-t-xl pt-0' : 'py-8 md:pt-20' }}
+        {{ $isLastBlock ? 'rounded-b-xl' : '' }}"
+        style="background-color: {{ $block['data']['background_color'] }}">
         @if(!empty($block['data']['title']))
             <h1>{{ $block['data']['title'] }}</h1>
         @endif
@@ -12,13 +14,18 @@
         @endif
 
         @php
-            $teams = \Detit\Polipeople\Models\Team::with('members')->get();
+            $teams = \Detit\Polipeople\Models\Team::with('members')
+                ->orderBy('sort_order', 'asc')
+                ->get();
 
             // Gestione dei membri in base al display_mode
             switch($block['data']['display_mode'] ?? 'all') {
                 case 'team':
                     $selectedTeam = $teams->find($block['data']['team_id']);
-                    $members = $selectedTeam ? $selectedTeam->members()->published()->get() : collect();
+                    $members = $selectedTeam ? $selectedTeam->members()
+                        ->published()
+                        ->orderBy('sort_order', 'asc')
+                        ->get() : collect();
                     break;
 
                 case 'selection':
@@ -26,6 +33,7 @@
                     $members = \Detit\Polipeople\Models\Member::published()
                         ->whereIn('id', $selectedIds)
                         ->with('teams')
+                        ->orderBy('sort_order', 'asc')
                         ->get();
                     break;
 
@@ -35,30 +43,18 @@
                         $currentTeam = $teams->first(function ($team) use ($selectedTeamSlug) {
                             return collect($team->getTranslations('slug'))->contains($selectedTeamSlug);
                         });
-                        $members = $currentTeam ? $currentTeam->members : collect();
+                        $members = $currentTeam ? $currentTeam->members()
+                            ->orderBy('sort_order', 'asc')
+                            ->get() : collect();
                     } else {
                         $currentTeam = null;
-                        $members = \Detit\Polipeople\Models\Member::published()->with('teams')->get();
+                        $members = \Detit\Polipeople\Models\Member::published()
+                            ->with('teams')
+                            ->orderBy('sort_order', 'asc')
+                            ->get();
                     }
                     break;
             }
-
-            // Rimuovi questa duplicazione
-            // $currentParams = request()->except(['lang', '_token']);
-            // $currentMember = request()->query('member');
-
-            // Ottieni tutti i blocchi della pagina
-            //$pageBlocks = $page->content ?? [];
-
-            // Trova l'indice del blocco corrente usando il tipo e i dati
-            //$currentIndex = collect($pageBlocks)->search(function($pageBlock) use ($block) {
-            //    return $pageBlock['type'] === 'polipeople-team-list' &&
-            //           $pageBlock['data'] === $block['data'];
-            //});
-
-            // È l'ultimo blocco se è l'ultimo nell'array
-            //$isLastBlock = $currentIndex === count($pageBlocks) - 1;
-
 
         @endphp
 

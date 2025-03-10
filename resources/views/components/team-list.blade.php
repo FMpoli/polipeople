@@ -15,13 +15,13 @@ $routePrefix = Route::has('teams') ? '' : 'polipeople.';
                 <div class="mb-8">
                     <nav class="flex flex-wrap justify-center gap-4">
                         <a href="{{ url()->current() }}"
-                           class="px-4 py-2 text-sm font-medium rounded-lg {{ is_null($slug) ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                           class="inline-flex items-center px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-md text-secondary hover:bg-primary/10 hover:text-primary {{ is_null($slug) ? 'bg-primary/10 text-primary' : '' }}">
                             {{ __('polipeople::polipeople.all_teams') }}
                         </a>
 
                         @foreach($teams as $team)
                             <a href="{{ url()->current() }}?team={{ $team->getTranslation('slug', app()->getLocale()) }}"
-                               class="px-4 py-2 text-sm font-medium rounded-lg {{ $team->is($currentTeam) ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                               class="inline-flex items-center px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-md text-secondary hover:bg-primary/10 hover:text-primary {{ $team->is($currentTeam) ? 'bg-primary/10 text-primary' : '' }}">
                                 {{ $team->getTranslation('name', app()->getLocale()) }}
                             </a>
                         @endforeach

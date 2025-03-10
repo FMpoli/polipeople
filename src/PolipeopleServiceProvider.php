@@ -19,7 +19,6 @@ class PolipeopleServiceProvider extends PackageServiceProvider
     {
         $package->name(static::$name)
             ->hasCommands($this->getCommands())
-            ->hasRoute('web')
             ->hasTranslations()
             ->hasViews()
             ->hasInstallCommand(function (InstallCommand $command) {
@@ -69,6 +68,7 @@ class PolipeopleServiceProvider extends PackageServiceProvider
         if (class_exists(\Base33\Pages\PagesServiceProvider::class)) {
             $this->loadViewsFrom(__DIR__.'/../resources/views', 'pages');
 
+            // Registra i blocchi
             \Base33\Pages\Resources\PageResource::registerBlock(
                 \Detit\Polipeople\Resources\PageResource\Blocks\TeamList::make()
             );
@@ -76,6 +76,7 @@ class PolipeopleServiceProvider extends PackageServiceProvider
             \Base33\Pages\Resources\PageResource::registerBlock(
                 \Detit\Polipeople\Resources\PageResource\Blocks\MemberDetail::make()
             );
+
         }
 
         // Register components
@@ -104,5 +105,7 @@ class PolipeopleServiceProvider extends PackageServiceProvider
     public function boot()
     {
         parent::boot();
+
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
     }
 }

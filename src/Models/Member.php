@@ -38,7 +38,8 @@ class Member extends Model
         'is_published',
         'prefix',
         'affiliation',
-        'role'
+        'role',
+        'sort_order',
     ];
 
     protected $casts = [
